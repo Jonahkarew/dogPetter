@@ -1,8 +1,6 @@
 const Model = require("../models/model");
 
 
-
-
 // basic get all controller
 const getAll = async (req, res) => {
     const data = await Model.find({});
