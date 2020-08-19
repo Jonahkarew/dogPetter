@@ -1,0 +1,42 @@
+{
+  "name": "mernstackstarter",
+  "version": "1.0.0",
+  "description": "a starter template for building mernstack applications",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\" ",
+    "client": "cd client && npm run start",
+    "install": "cd client && npm install",
+    "build": "cd client && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jonahkarew/mernStackStarter.git"
+  },
+  "keywords": [
+    "mern",
+    "react",
+    "node",
+    "mongo",
+    "express",
+    "template"
+  ],
+  "author": "Jonah Karew",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jonahkarew/mernStackStarter/issues"
+  },
+  "homepage": "https://github.com/Jonahkarew/mernStackStarter#readme",
+  "dependencies": {
+    "concurrently": "^5.3.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "if-env": "^1.0.4",
+    "mongodb": "^3.6.0",
+    "mongoose": "^5.10.0",
+    "nodemon": "^2.0.4"
+  }
+}
