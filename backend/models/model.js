@@ -1,19 +1,18 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    name: {
+    email: {
         type: String,
         required: true,
-        trim: true,
-        lowercase: true
+        trim: true
     },
     password: {
-        type: Number,
-        default: 0,
-        validate(value){
-            if( value < 0) throw new Error("negative calories aren't real")
-        }
-    }
+        type: String,
+        required: true
+    },
+    petted: [
+        String
+    ]
 })
 
 const User = mongoose.model("User", userSchema);

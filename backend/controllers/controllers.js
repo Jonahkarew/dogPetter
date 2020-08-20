@@ -1,4 +1,4 @@
-const Model = require("../models/model");
+const User = require("../models/model");
 
 
 // basic get all controller
@@ -94,6 +94,57 @@ const patchOne = async (req, res) => {
     }
 }
 
+const register = (req, res) => {
+    const {
+        email,
+        password
+    } = req.body;
+
+    const user = new User({
+        email,
+        password
+    })
+
+    try {
+        user.save()
+        res.send(user)
+    }
+    catch (err) {
+        res.status(500).send(err)
+    }
+}
+
+const petDog = (req, res, next) => {
+    var goodBoi = req.body.petted;
+
+    var newPet = goodBoi
+    try {
+        User.findOneAndUpdate(
+                              { email: req.body.email },
+                              { $push: { petted: newPet } },
+                              {new: true},
+                              (err, data) => {
+                                  if (err){
+                                      console.log("something went wrong when updating data!")
+                                  }
+                                   return res.send(data)
+                              }
+                              )
+    }
+    catch (err) {
+        res.status(500).send(err)
+    }
+}
+
+const getProfile = async (req, res) => {
+    const data = await User.findOne({ email: req.body.email })
+    try {
+        res.send(data)
+    }
+    catch (err) {
+        res.status(500).send(err)
+    }
+}
 module.exports = {
     getAll,
     getOneById,
@@ -101,5 +152,11 @@ module.exports = {
     postData,
     deleteOne,
     deleteMany,
-    patchOne
+    patchOne,
+
+
+
+    register,
+    petDog,
+    getProfile
 }
