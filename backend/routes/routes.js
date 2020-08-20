@@ -10,7 +10,8 @@ const {
     patchOne,
     register,
     petDog,
-    getProfile
+    getProfile,
+    getDoggos
     } = require("../controllers/controllers");
 
 // router.route("/api").get(getAll);
@@ -25,5 +26,6 @@ router.route("/api/:id").patch(patchOne);
 router.route("/api").post(register)
 router.route("/api-pet").post(petDog)
 router.route("/api").get(getProfile)
+router.route("/doggos").get(getDoggos)
 
 module.exports = router

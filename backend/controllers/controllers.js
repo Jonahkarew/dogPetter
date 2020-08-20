@@ -1,5 +1,5 @@
 const User = require("../models/model");
-
+const axios = require("axios");
 
 // basic get all controller
 const getAll = async (req, res) => {
@@ -145,6 +145,17 @@ const getProfile = async (req, res) => {
         res.status(500).send(err)
     }
 }
+
+
+const getDoggos = async (req, res) => {
+    try {
+     const data = await axios.get('https://dog.ceo/api/breeds/image/random/10')
+     res.status(200).send(data.data.message)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  
 module.exports = {
     getAll,
     getOneById,
@@ -158,5 +169,6 @@ module.exports = {
 
     register,
     petDog,
-    getProfile
+    getProfile,
+    getDoggos
 }
