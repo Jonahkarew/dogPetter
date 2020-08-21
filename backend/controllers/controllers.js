@@ -1,5 +1,6 @@
 const User = require("../models/model");
 const axios = require("axios");
+const token = require("jsonwebtoken")
 
 // basic get all controller
 const getAll = async (req, res) => {
@@ -114,22 +115,77 @@ const register = (req, res) => {
     }
 }
 
+const login = async (req, res) => {
+    const { email, password } = req.body;
+    // const [findUserError, userInfo] = await User.findOne({ email })
+    const userInfo = await User.findOne({ email })
+    try{
+        res.status(200).send(userInfo)
+    }
+    catch(err){
+        res.status(500).json({error: "this is broken dude"})
+    }
+    // try{
+    //     if (findUserError) {
+    //         console.log(findUserError)
+    //         res.status(500).json({
+    //             error: "Internal server error, please try again later."
+    //         })
+    //     }
+    //     else if (!userInfo) {
+    //         res.status(404).json({
+    //             error: "that user was not found in our database"
+    //         })
+    //     }
+    //     else {
+    //         const [passwordErr, success] = await handle(userInfo.isCorrectPassword(password))
+
+    //         if (passwordErr) {
+    //             res.status(500).json({
+    //                 error: "internal error handling password, please try again later."
+    //             })
+    //         }
+    //         else if (!success) {
+    //             res.status(401).json({
+    //                 error: "that password is not correct"
+    //             })
+    //         }
+    //         else {
+    //             const payload = {
+    //                 _id: userInfo._id,
+    //                 info: userInfo
+    //             }
+
+    //             const token = jwt.sign(payload, secret, {
+    //                 expiresIn: "48h"
+    //             })
+
+    //             res.cookie("token", token, { httpOnly: true }).status(200).json(token)
+    //         }
+    //     }
+    // }
+    // catch (err) {
+    //     res.status(500).json({error: "login function is broken"})
+    // }
+        
+}
+
 const petDog = (req, res, next) => {
     var goodBoi = req.body.petted;
 
     var newPet = goodBoi
     try {
         User.findOneAndUpdate(
-                              { email: req.body.email },
-                              { $push: { petted: newPet } },
-                              {new: true},
-                              (err, data) => {
-                                  if (err){
-                                      console.log("something went wrong when updating data!")
-                                  }
-                                   return res.send(data)
-                              }
-                              )
+            { email: req.body.email },
+            { $push: { petted: newPet } },
+            { new: true },
+            (err, data) => {
+                if (err) {
+                    console.log("something went wrong when updating data!")
+                }
+                return res.send(data)
+            }
+        )
     }
     catch (err) {
         res.status(500).send(err)
@@ -149,13 +205,13 @@ const getProfile = async (req, res) => {
 
 const getDoggos = async (req, res) => {
     try {
-     const data = await axios.get('https://dog.ceo/api/breeds/image/random/10')
-     res.status(200).send(data.data.message)
+        const data = await axios.get('https://dog.ceo/api/breeds/image/random/10')
+        res.status(200).send(data.data.message)
     } catch (error) {
-      console.error(error)
+        console.error(error)
     }
-  }
-  
+}
+
 module.exports = {
     getAll,
     getOneById,
@@ -168,6 +224,7 @@ module.exports = {
 
 
     register,
+    login,
     petDog,
     getProfile,
     getDoggos

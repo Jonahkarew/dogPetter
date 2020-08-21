@@ -11,7 +11,8 @@ const {
     register,
     petDog,
     getProfile,
-    getDoggos
+    getDoggos,
+    login
     } = require("../controllers/controllers");
 
 // router.route("/api").get(getAll);
@@ -24,6 +25,7 @@ router.route("/api/:id").patch(patchOne);
 
 // new routes
 router.route("/api").post(register)
+router.route("/login").post(login)
 router.route("/api-pet").post(petDog)
 router.route("/api").get(getProfile)
 router.route("/doggos").get(getDoggos)
