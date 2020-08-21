@@ -95,24 +95,54 @@ const patchOne = async (req, res) => {
     }
 }
 
-const register = (req, res) => {
+const register = async (req, res) => {
     const {
         email,
         password
     } = req.body;
 
+
+
+
     const user = new User({
         email,
         password
     })
+    
+    // var checkedUser = await User.findOne({ email })
+    // if (checkedUser === null){
+    //     checkedUser = {
+    //         email: ""
+    //     }
+    // }
+    // else{
+    //     return checkedUser;
+    // }
+    // try{
+    //     res.status(200).send(checkedUser)
+    // }
+    // catch(err){
+    //     res.status(500).send(err)
+    // }
+    // console.log(checkedUser.email)
+    // console.log(email)
+    // console.log(user.email)
 
-    try {
-        user.save()
-        res.send(user)
-    }
-    catch (err) {
-        res.status(500).send(err)
-    }
+
+    // if (checkedUser.email === email){
+    //     res.json({message: "a user with that email address already exists"})
+    // }
+    // else{
+        try {
+            user.save()
+            res.send(user)
+        }
+        catch (err) {
+            res.status(500).send(err)
+        }
+    // }
+
+ 
 }
 
 const login = async (req, res) => {

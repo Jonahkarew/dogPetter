@@ -1,11 +1,15 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const uniqueValidator = require("mongoose-unique-validator");
 
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        validate: {
+            validator: () => Promise.resolve(() => this.compare(user))
+        }
     },
     password: {
         type: String,
@@ -47,6 +51,8 @@ userSchema.methods.isCorrectPassword = function isCorrectPassword(password){
         })
     })
 }
+
+
 
 const User = mongoose.model("User", userSchema);
 
