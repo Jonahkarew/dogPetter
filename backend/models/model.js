@@ -7,9 +7,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        validate: {
-            validator: () => Promise.resolve(() => this.compare(user))
-        }
+        unique: true
     },
     password: {
         type: String,
@@ -20,16 +18,35 @@ const userSchema = new mongoose.Schema({
     ]
 })
 
+
+userSchema.path("email").validate(async (email) => {
+    try {
+        const emailCount = await mongoose.models.User.countDocuments({ email })
+        return !emailCount
+    }
+    catch (err) {
+        console.log(
+        "this is broke " + err
+        )
+    }
+
+}, function(){ return "email already exists"})
+
+
+
+
+
+
 const saltRounds = parseInt(process.env.SALTROUNDS)
 
-userSchema.pre("save", function createPassword(next){
-    if (this.isNew || this.isModified("password")){
+userSchema.pre("save", function createPassword(next) {
+    if (this.isNew || this.isModified("password")) {
         const document = this;
         bcrypt.hash(this.password, saltRounds, (err, hashedPassword) => {
-            if(err){
+            if (err) {
                 next(err)
             }
-            else{
+            else {
                 document.password = hashedPassword
                 next();
             }
@@ -37,15 +54,15 @@ userSchema.pre("save", function createPassword(next){
     }
 })
 
-userSchema.methods.isCorrectPassword = function isCorrectPassword(password){
+userSchema.methods.isCorrectPassword = function isCorrectPassword(password) {
     const document = this;
     return new Promise((resolve, reject) => {
-        bcrypt.compare(password, document.password, function compareCallback(err, same){
-            if (err){
+        bcrypt.compare(password, document.password, function compareCallback(err, same) {
+            if (err) {
                 console.log(err)
                 reject(err)
             }
-            else{
+            else {
                 resolve(same)
             }
         })

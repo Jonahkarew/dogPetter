@@ -18,7 +18,8 @@ if(process.env.NODE_ENV === "production"){
 mongoose.connect(process.env.MONGOCLUSTER, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false
+  useFindAndModify: false,
+  useCreateIndex: true
 });
 
 
