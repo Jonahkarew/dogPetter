@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const uniqueValidator = require("mongoose-unique-validator");
+// const uniqueValidator = require("mongoose-unique-validator");
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -19,18 +19,18 @@ const userSchema = new mongoose.Schema({
 })
 
 
-userSchema.path("email").validate(async (email) => {
-    try {
-        const emailCount = await mongoose.models.User.countDocuments({ email })
-        return !emailCount
-    }
-    catch (err) {
-        console.log(
-        "this is broke " + err
-        )
-    }
+// userSchema.path("email").validate(async (email) => {
+//     try {
+//         const emailCount = await mongoose.models.User.countDocuments({ email })
+//         return !emailCount
+//     }
+//     catch (err) {
+//         console.log(
+//         "this is broke " + err
+//         )
+//     }
 
-}, function(){ return "email already exists"})
+// }, function(){ return "email already exists"})
 
 
 

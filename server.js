@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const routes = require("./backend/routes/routes");
 const session = require("express-session");
+// const passport = require("./backend/passport/index");
 
 require('dotenv').config()
 
@@ -12,17 +13,18 @@ const port = process.env.PORT || 3001;
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
-app.use(
-  session({
-    secret: process.env.SESSIONSECRET,
-    resave: false,
-    saveUninitialized: true,
-  })
-)
+// app.use(
+//   session({
+//     secret: process.env.SESSIONSECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//   })
+// )
 
-app.use((req, res,next) => {
-  console.log("req.session", req.session)
-})
+
+// app.use((req, res,next) => {
+//   console.log("req.session", req.session)
+// })
 
 
 if(process.env.NODE_ENV === "production"){

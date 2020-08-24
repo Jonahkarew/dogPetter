@@ -96,25 +96,29 @@ const patchOne = async (req, res) => {
 }
 
 const register = async (req, res) => {
-    const {
-        email,
-        password
-    } = req.body;
+    console.log("user registration")
+    console.log(req.body)
+
+    User.findOne({ email: req.body.email }, async(err, doc) => {
+    if (err) throw err;
+    if (doc) res.send("user already exists")
+    if (!doc) {
 
 
 
 
-    const user = new User({
-        email,
-        password
-    })
-        try {
-            user.save()
-            res.send(user)
-        }
-        catch (err) {
-            res.status(500).send(err)
-        }
+        const user = new User({
+            email: req.body.email,
+            password: req.body.password
+        })
+        await user.save()
+        res.send("user successfully created")
+
+    }
+
+})
+    
+      
 
  
 }
@@ -123,11 +127,11 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     // const [findUserError, userInfo] = await User.findOne({ email })
     const userInfo = await User.findOne({ email })
-    try{
+    try {
         res.status(200).send(userInfo)
     }
-    catch(err){
-        res.status(500).json({error: "this is broken dude"})
+    catch (err) {
+        res.status(500).json({ error: "this is broken dude" })
     }
     // try{
     //     if (findUserError) {
@@ -171,7 +175,7 @@ const login = async (req, res) => {
     // catch (err) {
     //     res.status(500).json({error: "login function is broken"})
     // }
-        
+
 }
 
 const petDog = (req, res, next) => {
