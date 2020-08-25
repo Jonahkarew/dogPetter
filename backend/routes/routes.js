@@ -1,13 +1,7 @@
 const router = require("express").Router();
-
+const User = require("../models/model")
+const bcrypt = require("bcryptjs")
 const {
-    getAll,
-    getOneById,
-    findOne,
-    postData,
-    deleteOne,
-    deleteMany,
-    patchOne,
     register,
     petDog,
     getProfile,
@@ -15,19 +9,16 @@ const {
     login
     } = require("../controllers/controllers");
 
-// router.route("/api").get(getAll);
-// router.route("/api/:id").get(getOneById);
-// router.route("/api-one").get(findOne)
-// // router.route("/api").post(postData);
-// router.route("/api/:id").delete(deleteOne);
-// router.route("/api-deletemany").delete(deleteMany);
-// router.route("/api/:id").patch(patchOne);
 
 // new routes
-router.route("/api").post(register)
-router.route("/login").post(login)
+// router.route("/api/register").post(register)
+
+router.route("/api/register").post(register)
+
+
+router.route("/api/login").post(login)
 router.route("/api-pet").post(petDog)
 router.route("/api").get(getProfile)
-router.route("/doggos").get(getDoggos)
+router.route("/api/doggos").get(getDoggos)
 
 module.exports = router

@@ -1,30 +1,37 @@
-const passport = require("passport");
-const LocalStrategy = require("./localStrategy");
-const User = require("../models/model");
-
-passport.serializeUser((user, done) => {
-    console.log("*** serializeUser called, user:")
-    console.log(user)
-    console.log("=============")
-    done(null, {_id: user._id})
-})
+const User = require("../models/model.js");
+const bcrypt = require("bcryptjs")
+const localStrategy = require("passport-local").Strategy
 
 
+module.exports = function (passport) {
+    passport.use(
+        new localStrategy((username, password, done) => {
+            User.findOne({ username: username }, (err, user) => {
+                if (err) throw err;
+                if (!user) return done(null, false);
+                bcrypt.compare(password, user.password, (err, result) => {
+                    if (err) throw err;
+                    if (result === true) {
+                        return done(null, user)
+                    }
+                    else {
+                        return done(null, false)
+                    }
+                })
+            })
+        })
+    );
 
-passport.deserializeUser((id, done) => {
-    console.log("deserialize user called")
-    User.findOne(
-        {_id: id},
-        "email",
-        (err, user) => {
-            console.log("deserialize user")
-            console.log(user)
-            console.log("===================")
-            done(null, user)
-        }
-    )
-})
-
-passport.user(LocalStrategy)
-
-module.exports = passport;
+    passport.serializeUser((user, cb) => {
+        cb(null, user.id)
+    })
+    passport.deserializeUser((id, cb) => {
+        User.findOne({ _id: id }, (err, user) => {
+            // cb(err, user)
+            const userInformation = {
+                username: user.username
+            }
+            cb(err, userInformation)
+        })
+    })
+}
