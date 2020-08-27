@@ -1,6 +1,4 @@
 const router = require("express").Router();
-const User = require("../models/model")
-const bcrypt = require("bcryptjs")
 const {
     register,
     petDog,
@@ -8,7 +6,6 @@ const {
     getDoggos,
     login
     } = require("../controllers/controllers");
-
 
 
 router.route("/api/register").post(register)
