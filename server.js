@@ -10,6 +10,7 @@ if(process.env.NODE_ENV === "production"){
   app.use(express.static("client/build"))
 }
 
+// mongoose connection
 mongoose.connect(process.env.MONGOCLUSTER, {
 useNewUrlParser: true,
 useUnifiedTopology: true,
@@ -22,14 +23,12 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 
-
+// middleware
 const middleware = require("./backend/middleware/middleware")
 app.use(middleware);
 require("./backend/passport/index")(passport)
 
-
+// implement routes
 app.use(routes);
-
-
 
 app.listen(port, () => console.log(`app is listening on port: ${port}`))

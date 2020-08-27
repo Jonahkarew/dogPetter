@@ -10,12 +10,8 @@ const {
     } = require("../controllers/controllers");
 
 
-// new routes
-// router.route("/api/register").post(register)
 
 router.route("/api/register").post(register)
-
-
 router.route("/api/login").post(login)
 router.route("/api-pet").post(petDog)
 router.route("/api").get(getProfile)
